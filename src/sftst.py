@@ -3,7 +3,7 @@ import time
 
 # === CONFIGURATION ===
 PWM_CHIP = 0           # pwmchip0
-PWM_CHANNEL = 1        # pwm0
+PWM_CHANNEL = 0        # pwm0
 FREQ_HZ = 50           # 50 Hz standard for RC servos
 PERIOD_US = 1_000_000 // FREQ_HZ  # 20_000 µs
 PERIOD_NS = PERIOD_US * 1000      # convert to nanoseconds
@@ -57,22 +57,14 @@ def sweep_servo():
             time.sleep(DELAY_SEC)
         """
 
-        test = 3
-
         if test == 0:
-            duty_ns = angle_to_duty_ns(50)
+            duty_ns = angle_to_duty_ns(90)
             write(f"{PWM_PATH}/duty_cycle", duty_ns)
             test = 1
         elif test == 1:
-            duty_ns = angle_to_duty_ns(130)
-            write(f"{PWM_PATH}/duty_cycle", duty_ns)
-            test = 0
-
-        elif test == 3:
             duty_ns = angle_to_duty_ns(90)
             write(f"{PWM_PATH}/duty_cycle", duty_ns)
             test = 0
-        print(duty_ns)
 
         time.sleep(1.2)
 
