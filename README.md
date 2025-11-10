@@ -53,3 +53,26 @@ For distributing power to the various components and ensuring communication betw
 ## Sensors
 
 As the primary sensor for detecting the course and obstacles, we use a 2D 360° LiDAR sensor that generates a precise point cloud of the robot’s surroundings at a rate of 15 Hz. This sensor detects all physical objects visible from its perspective in a plane parallel to the ground by continuously rotating and measuring distances with a laser in each direction. The LiDAR is positioned in the robot in such a way that it has an almost completely unobstructed 360° field of view. Since the camera is mounted above the LiDAR, the only obstruction is directly behind the LiDAR — the so-called “shark fin” of our robot — through which the camera’s data cable is safely routed. However, this narrow “shark fin” occupies only about 4° of the LiDAR’s field of view and can therefore be completely and losslessly filtered out in software. This allows obstacles and walls to be continuously tracked in all directions, improving overall reliability.
+
+# Obstacles
+For precise navigation on the parcours the robot primarily uses the walls for orientation. In the opening race the robot therefor constantly monitors and analyzes the position of the for it visible walls to drive straight foreward in the straight sections and anticipate curves. This way it can drive efficiently on the parcours with a high velocity. 
+
+## Concept
+
+
+## Obstacledetection
+
+
+## Drivecontroller
+
+
+## General
+
+
+# Pictures
+
+
+# Engineering/Design
+
+
+# Attachment
