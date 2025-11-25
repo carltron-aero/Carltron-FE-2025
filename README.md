@@ -1,5 +1,8 @@
 # Team Carltron - Future Engineers 2025
+
 ![nice_robot.JPG](other%2Fnice_robot.JPG)
+
+
 <center>This is the Future Engineers project repository by team Carltron for the 2025 World Robot Olympiad International Final.
 </center>
 
@@ -391,7 +394,6 @@ specific distance or at a specific speed from guessed timing values and changing
 
 ## Power Supply
 
-### Selection of batteries
 ### Selection of batteries
 
 In order to determine the kind of batteries we would need to adequately power our robot, our first step was getting an overview of the power consimption of all the components we intended to use:
