@@ -84,12 +84,12 @@ Due to their safety track record, wide availability, flexibly integrable form fa
 
 Our different components each require specifc voltages which we need to supply to them reliably:
 
-| Voltage | Components                          |
-|---------|-------------------------------------|
-| 3.3 V   | IMU, Camera, Motor Encoder, IO-LEDs |
-| 5.1 V   | Raspberry Pi, Lidar Sensor          |
-| 8.4 V   | Steering Servo, Cooling Fans        |
-| 16.0 V  | Drive Motor                         |
+| Voltage | Components                                           |
+|---------|------------------------------------------------------|
+| 3.3 V   | IMU, Camera, Motor Encoder, IO-LEDs, Lighting Bridge |
+| 5.1 V   | Raspberry Pi, Lidar Sensor                           |
+| 8.4 V   | Steering Servo, Cooling Fans                         |
+| 16.0 V  | Drive Motor                                          |
 
 So there are four discreet voltage rails that need to be supplied reliably:
 
@@ -100,6 +100,9 @@ Both the Lidar Sensor and the Raspberry Pi need to be supplied with 5.1 V. While
 At 8.4 V, the cooling fans of our robot use ~250 mA each and our Steering Servo needs ~1.4 A at peak. They are supplied by a smaller 3 A Step-Down Buck Converter.
 
 The drive Motor is run directly off the Batteries, removing the need for any additional converters. Changes in the supply voltage based on the batteries state of charge are fully mitigated by our encoder-based drivetrain controller algorithms, as will be discussed later in the documentation.
+
+This schematic provides an overview of how the different voltage rails are connected:
+![Schematic_Power_Rails_Diagram.png](schemes%2FSchematic_Power_Rails_Diagram.png)
 
 The separate Buck Converters used for the 8.4 V and 5.1 V rails also decouple all the sensitive electronics and sensors from our drive train power systems, preventing any voltage ripple and inconsistencies caused by sudden power changes in our drivetrain and steering systems.
 
