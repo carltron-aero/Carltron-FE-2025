@@ -141,6 +141,8 @@ After trying out different set-ups and configurations, we found a novel techniqu
 modifications, but allowed us to skip the compute intensive full frame analysis on each camera frame entirely and 
 without any conversions.
 
+### Camera
+
 Our approach: We can reliably detect the obstacles and their position using the Lidar sensor, just not their color. 
 From the Lidar data we directly know the exact angle in the circular Lidar scan, the obstacle is located at from the 
 Lidars' perspective.
@@ -175,16 +177,42 @@ And with all that in place, we simply position the camera sensor directly over t
 sensor but still under the 10 cm max height of the obstacles, et voilà - we have a camera that gives us a planar 
 360° reading that is concentric with the planar 360° reading of the Lidar.
 
+> ![camera_placement.jpg](other%2Fcamera_placement.jpg)
+> 360° camera positioned concentric above the lidar sensor
+
+
 This means that we can simply 1:1 map the angles from our Lidar scans, on which we detect obstacles, onto our camera 
 frames. Instead of analysing the frame for obstacles, we just have to detect them physically using Lidar and then 
 just get the color reading on a couple of pixels on the corresponding angle of our ring-shaped region of interest in 
-order to tell the color of any detected obstacles.
+order to tell the color of any detected obstacles. 
 
-But the sensor plane is already exactly the right keyword: 
+Since no actual image analysis has to take place, and we also don't need any conversions for the different sensor 
+perspectives, our color detection actually only adds on the order of a few milliseconds to any obstacle analysis, 
+making it much more efficient than any other approaches we tested.
+
+This special approach to the lidar - camera  combination for obstacle and color detection is also a great example of 
+our fundamental design strategies: Instead of simply using the standard approach of mounting the camera forward 
+facing - following the motto "we'll fix that later in the code...", we reduced the issue to its core and came up 
+with novel approaches until we found one that is both simpler more reliable and efficient for this specific challenge. 
 
 
-As the primary sensor for detecting the course and obstacles, we use a 2D 360° LiDAR sensor that generates a precise point cloud of the robot’s surroundings at a rate of 15 Hz. This sensor detects all physical objects visible from its perspective in a plane parallel to the ground by continuously rotating and measuring distances with a laser in each direction. The LiDAR is positioned in the robot in such a way that it has an almost completely unobstructed 360° field of view. Since the camera is mounted above the LiDAR, the only obstruction is directly behind the LiDAR — the so-called “shark fin” of our robot — through which the camera’s data cable is safely routed. However, this narrow “shark fin” occupies only about 4° of the LiDAR’s field of view and can therefore be completely and losslessly filtered out in software. This allows obstacles and walls to be continuously tracked in all directions, improving overall reliability.
+Mounting the camera on top of the Lidar sensor however also comes with a noticeable downside: The data from the 
+camera has to somehow come from above the lidar scanning plane below it - to where the rest of our electronics 
+resides to analyse the data. So somehow, the camera cable has to cross through the field of view of the Lidar sensor.
+To mitigate the effect of this, we decided to put our so called "shark fin" behind the lidar sensor, that allows a 
+flatband cable for the camera to reach the Raspberry Pi whilst also holding the custom camera housing and mounting 
+structure.
 
+> ![sensor_module_side.jpg](other%2Fsensor_module_side.jpg)
+> Assembled sensor module with Lidar sensor, shark fin and camera on top with the camera housing
+
+As might have already caught your attention looking at the sample frame provided earlier, the center of the frame 
+inside of the ring-shaped region of interest is actually blacked out in the sample frame. This is due to us 
+employing a small partial lens cap, that simply blocks any lights from shining on the camera sensor from directly 
+above in order to improve  color precision during the challenge.
+
+
+### Other Sensors
 
 ## Power Supply
 
