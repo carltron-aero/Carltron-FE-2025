@@ -211,11 +211,27 @@ inside of the ring-shaped region of interest is actually blacked out in the samp
 employing a small partial lens cap, that simply blocks any lights from shining on the camera sensor from directly 
 above in order to improve  color precision during the challenge.
 
-
 ### Other Sensors
+
+While Lidar and camera theoretically could provide enough information to fully solve the Future Engineers challenge, 
+in practice some secondary sensors are also needed to improve performance and get precise readings for specific 
+aspects on the robot.
+
+The first additional sensor is our IMU (inertial measurements unit), which combines a gyroscope with a magnetrometer 
+and additional acceleration readings. We mainly use the gyroscope, both as part of our drive control algorithms to 
+keep driving in a straight line as well as a secondary check for the localisation algorithm to make sure we're 
+always using the correct regions of interest on a specific side. It also is used to count the solved sections in the 
+open challenge
+
+We also specifically chose a drive motor with an encoder. An encoder allows us to precisely measure how many 
+revolutions our motor (and therefor the wheels) does in any given time frame, which lets us read both the physical 
+distance our wheels have done as well as the actual physical speed were currently doing, decoupling driving a 
+specific distance or at a specific speed from guessed timing values and changing battery state of charge (etc).
+
 
 ## Power Supply
 
+### Selection of batteries
 ### Selection of batteries
 
 In order to determine the kind of batteries we would need to adequately power our robot, our first step was getting an overview of the power consimption of all the components we intended to use:
@@ -322,11 +338,46 @@ The Mainboard also directly integrates seamlessly with our custom battery holder
 In order to connect the Raspberry Pi with the Mainboard, we also designed a custom adapter PCB, that directly 
 connects all GPIO pins of the Pi.
 
->TODO: Picture of bridge
+> ![bridge_pcb.png](other%2Fbridge_pcb.png)
+> Adapter bridge connecting the Pi's GPIO to our Mainboard
 
 For all components that were directly mounted onto our custom Mainboard, we used soldering for the connectors.
 
 ![soldering.jpg](other%2Fsoldering.jpg)
+
+### IO
+In order to start our robot for the run and to always be able to tell its current state at a glance, we equipped or 
+robot with a set of I/O features.
+
+Since power management and GPIO distribution are both done by our Mainboard, we were able to simply place a
+switch on each side of the Mainboard that control the power and the program start as required by the rules. There 
+are specific cutouts made in the replaceable bodywork of the robot that allow easy access to the switches for use in 
+the competition.
+
+In order for the robot to display its current state while the code is running, we added a green and a red led to our 
+main board, that are animated in specific ways to tell the different modes and states of the robot code apart at a 
+glance. 
+
+These Mainboard-leds are not visible though, when the replaceable bodywork is in use, since it covers up the 
+internal components. To still display the state of the robot, we added a red rear light bar to the bodywork that 
+mirrors 
+the behaviour of the red Mainboard-LED.
+
+![rear_light.JPG](other%2Frear_light.JPG)
+
+We also added a white light bar to the front of the bodywork that also provides a much higher light output and 
+mirrors the green Mainboard-LED. The front LED-Bar is used to light up the obstacles when scanning them in each zone.
+
+![front_light.JPG](other%2Ffront_light.JPG)
+
+The rear and front LED-Bars are driven by an LED-Bridge located underneath the "hood" of the robot, that gets 
+directly controlled by the Raspberry Pi using hardware pwm. Since we wanted to still be able to quickly and easily 
+remove and put on the replaceable bodywork, basically making it hot-swappable, we added 4-pin pogo connectors to 
+both the replaceable bodywork and the front of the chassis, that simply connect magnetically, so no cabling has to 
+be managed when removing the bodywork.
+
+> ![pogo.jpg](other%2Fpogo.jpg)
+> 4-pin pogo connector on the chassis side for seamless bodywork hot-swap
 
 
 # Obstacles
