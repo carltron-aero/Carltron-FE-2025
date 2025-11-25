@@ -402,3 +402,14 @@ For precise navigation on the parcours the robot primarily uses the walls for or
 
 
 # Attachment
+
+# Github utilization
+In work on our project for the International final, we decided to separate our working repo from this documentation 
+repo, since using our design approach we often create temporary structures that would just clutter the 
+documentation repo with no real benefit. 
+
+Our internal working repo can be found here: https://github.com/carltron-aero/src
+
+During development towards Singapore we used our internal working repo whenever any new developments were made in 
+order for everyone to be on the same page. We also used features like using different branches to pursue multiple 
+design approaches at the same time in order to compare the outcomes without interfering with each other.
