@@ -6,15 +6,50 @@
 
 ### Our Journey so far...
 The 2025 season is actually our first season both in Future Engineers and WRO in general. After participating in multiple robotics competitions over the past few years, we were looking for a new challenge, when we found out about the Future Engineers Category in december 2024. Due to exams and other obligations though, we were only able to start working on our robot in April 2025, one month before our regional competition in Aachen, Germany. This challenged us to make our design strategies more efficient and also streamline our project management. After getting a working robot ready just in time, our first big moment came on the 17th of May at our regionals, where we managed to secure the qualification for the german finals by taking 1st place.
-Our robot had jumped over the first hurdle, which was a big relieve and motivated us to go all in on the national competition. But not everything was well and good. Our first robot (V1) had also shown some flaws during its live competition runs, so we already had a long list of ideas on how to improve it and diminish or remove these issues. 
+Our robot had jumped over the first hurdle, which was a big relieve and motivated us to go all in on the national 
+competition. But not everything was well and good. Our first robot (V1) had also shown some flaws during its live 
+competition runs, so we already had a long list of ideas on how to improve it and diminish or remove these issues. 
+Development went on to the German finals, where we were able to secure 2nd place, qualifying us for the 
+international final. Now, since than a lot has happened. A completely from the ground up new robot happened among 
+others. But let's not spoil too much, cause that's what the rest of this documentation is all about, right?
+
 
 
 ## Design Strategy
-For the general design of both our hardware and software systems, we always try to simplify all solutions to their base requirements. For example this means solving issues on the lowest level possible (e.g. hardware > software). 
+As a basis for all decisions we would make in our entire process, both hardware, software and everything in between 
+we first decided to lay down some fundamental design principles to help us make good decisions in the developement 
+of our robot from the get go.
+
+- For the general design of both our hardware and software systems, we always try to simplify all solutions to their 
+base requirements. For example this means solving issues on the lowest level possible; hardware > software. 
+- Question all common solutions: Why is something "always" done this way? Is it really the right approach for our 
+  specific case?
+- Minimize complexity! A highly complex system is hard to work with and will probably bring serious reliability issues.
 
 # Mobility Management
-## Motorization
-For the choice of our drive system, the central factors were power and compactness. At first we considered implementing an all-wheel drive with two steering axles for maximum maneuverability. But our research showed that our robot would have to be significantly larger than planned for that solution.
+## Motorization and Chassis
+
+
+In the beginning of our preparations we looked at different kinds of robot kits and systems that we might build upon.
+However, none of them seemed really perfect for what we had in mind. Either the form-factor wasn't quite right, the 
+chassis would have needed significant changes anyway, or it just took away too many development opportunities.
+
+So we decided to completely design our own vehicle from scratch using CAD software. That way we would also have 100 
+% control over every ever so slight detail that would need to be tweaked.
+
+We had already developed our core concentric sensor system previously, which already gave us a couple of constraints 
+concerning the layout and size of the robot. And developing a concept for the layout of the robot with all of its 
+biggest components was also the first main step we took towards developing the chassis of our robot.
+
+Our 3D printer probably was the most important tool throughout our entire hardware-development phase. We printed all 
+parts of our chassis in PLA Filament with fine-tuned printing parameters, which can be found in the printing files 
+inside the */models* directory. By using 3D CAD designed Parts that we printed ourselves, we also managed to iterate 
+through different design approaches quickly, in most cases with under one hour per hardware iteration.
+
+### Drivetrain
+For the choice of our drive system, the central factors were power and compactness. At first we considered
+implementing an all-wheel drive with two steering axles for maximum maneuverability. But our research showed that
+our robot would have to be significantly larger than planned for that solution to work.
 
 From the outset we set a guiding principle for the robot’s development: every aspect of the design must aim for the simplest solution with the lowest susceptibility to failure. Accordingly, we performed calculations and experiments on turning circles and performance for different drive options to determine what the simplest overall system would look like that still fully meets our requirements:
 
@@ -26,12 +61,114 @@ From the outset we set a guiding principle for the robot’s development: every 
 
 4. The steering must be able to transition fully from one extreme deflection to the other within 0.3 s.
 
-In the comparison we found that a conventional approach—with the rear axle as the drive axle and the front axle used purely for steering—offered the best compromise between compactness and performance. This configuration also gave us the opportunity to develop a fully custom steering system. We then assembled the corresponding drive system to meet the requirements.
+In the comparison we found that a conventional approach—with the rear axle as the drive axle and the front axle used purely for steering—offered the best compromise between compactness and performance.
+This configuration also gave us the opportunity to develop a fully custom steering system.
 
-To ensure high agility despite using front-wheel steering only, a differential on the rear axle is very helpful because it allows the driving wheels to move independently. This lets the inner wheel follow a smaller turning radius without unnecessary slip and without the wheels losing traction. At the regional competition we used an off-the-shelf rear axle with a differential. However, its precision and reliability did not meet our requirements. In addition, using this and other standard components in the drivetrain forced us to design the rest of the robot around those parts rather than integrating them well, since they were not developed specifically for our use case.
+As in most cases, a lot of our chassis- and robot-development is rooted in well based design decisions.
 
-To keep the robot’s form factor small and maintain full flexibility in the overall design, we decided to develop our own differential gearbox that would fit perfectly into the rest of the robot’s layout. We tested various bearings, gears, and motor couplings for this. Ultimately we developed the differential gearbox shown in cross section in Fig. 1, which—like most of the robot’s other components—was designed from the ground up by us in the 3D CAD software Onshape.
+#### Motor selection
+For our main drive motor, we were primarily constrained by space it could get in the robot. When developing a 
+conceptual layout, we found that we would need a 25 mm diameter motor would be just the right fit for our chassi.
 
+As another strict requirement for the drive motor, we needed it to have an encoder, since we intended accurately 
+control the physical wheel speed using the data from this sensor as well as distance data
+
+So then we started looking for such a Motor, and actually fairly quickly found the Motor+Encoder combination we use 
+till this day. It is a DC electric motor, that runs at 1000 rpm nominally.
+
+>![drive_motor.jpg](other%2Fdrive_motor.jpg)
+> The drive motor theat was selected 
+
+To ensure high agility despite using front-wheel steering only, a differential on the rear axle is very helpful
+because it allows the driving wheels to move independently. This lets the inner wheel follow a smaller turning radius without unnecessary slip and without the wheels losing traction. At the regional competition we used an off-the-shelf rear axle with a differential. However, its precision and reliability did not meet our requirements. In addition, using this and other standard components in the drivetrain forced us to design the rest of the robot around those parts rather than integrating them well, since they were not developed specifically for our use case.
+
+To keep the robot’s form factor small and maintain full flexibility in the overall design, we decided to develop
+our own differential gearbox that would fit perfectly into the rest of the robot’s layout. We tested various 
+bearings, gears, and motor couplings for this. Ultimately we developed the differential gearbox shown below, which—like 
+most of the robot’s other components—was designed from the ground up by us in the 3D CAD software Onshape. We 
+3D-printed the Differential in PETG-CF for its improved toughness and abrasion resistance. So far we have done about 
+50h of testing without the 3D-printed differential showing any wear whatsoever. 
+However, we bought the axle off the shelf for durability reasons.
+
+> ![ball_diff.jpg](other%2Fball_diff.jpg)
+> Ball differential (half), purple part was developed and manufactured by us
+
+The type of differential we ended up implementing is a so called ball-differential. While it achieves the exact same 
+effect as normal geared differentials for the drivetrain, it takes a very different approach by using a double 
+clutch design, that uses the spherical character of the balls to reverse the counter-rotation. 
+A more detailed explanation of the ball diff can be found here: https://en.wikipedia.org/wiki/Ball_differential
+
+Besides compactness, improved precision and efficiency, ball differentials also have a very distinct feature by 
+default: They are so called "limited slip differential", meaning that we can fine tune just how much slippage we 
+want to allow between the wheels to optimize for the best power transfer on the game field.
+
+By developing this ball diff ourselves we also were able to perfectly tune the gear ratio to the drive motor, which 
+is now 16:60. However, we could simply change this parameter if we wanted to adjust the velocity range of the robot.
+> ![assembled_drivetrain.jpg](other%2Fassembled_drivetrain.jpg)
+> Fully assembled drivetrain system
+
+### Steering System
+
+As part of our Drivetrain/Chassis Development process we had found that especially if we were to attempt the parking 
+challenge, we would need to significantly improve the steering agility of the robot, to an extent that could not be 
+achieved by tuning or using off the shelf components.
+
+So we did a full redesign of the entire steering system, making it more compact and drastically increasing the 
+steering angles. We finally managed to minimize the turning diameter of the robot to just 42 cm, falling well below 
+the required maximum of 55 cm set in the development phase. This would come in clutch for leaving and entering the 
+parking lot reliably, since now we could actually do it in one single motion, where previously multiple direction 
+changes were required.
+
+> ![steering.jpg](other%2Fsteering.jpg)
+> Newly developed Steering system for improved agility
+
+We had previously used quite a large steering servo, that didn't work as reliably and didn't provide the speed and 
+precision we set out to achieve with our new target values for the steering system.
+
+So we went looking for a new Servo, fitting the requirement, comparing different models till we decided to use the 
+KST MR320 180°. This smaller servo that actually provides better performance than our previous one also helped us 
+significantly in optimizing the robot layout, since the our concentric core sensor assembly could now be lowered, 
+giving it more margin for measuring imprecision.
+
+In order to test our new steering kinematics we now also started using CAD based simulations, that allow us to go 
+through all the required operational modes and movements, without requiring a lot of 3D-printing and subsequent 
+plastic pollution.
+
+![steering_sim.png](other%2Fsteering_sim.png)
+
+### Bodywork
+
+We developed a replaceable bodywork for our robot, that protects the components from environmental influences, 
+directs the cooling airflow through the robot and provides it with front and rear lighting for status indications 
+and more luminance for the obstacle scanning.
+
+![bodywork.jpg](other%2Fbodywork.jpg)
+
+The bodywork gets held on the chassis magnetically, making it very easy to hot-swap whenever something needs done 
+"under the hood".
+
+### Aerodynamics
+
+Another advantage of the bodywork we designed is the improved aerodynamic efficiency the bodywork provides to our robot.
+We ran CFD (computational fluid dynamics) simulations as a virtual wind tunnel, to compare different versions in 
+their aerodynamic characteristics.
+
+This is a visualization of the latest simulation results:
+![aerodynamics.png](other%2Faerodynamics.png)
+
+As you can see, we managed to create a clean air split along the front bonnet of the robot, guiding the air over two 
+moulds in the bodywork towards the rear of the car without flow separation. By extending the rear spoiler overhang 
+we managed to almost completely remove any vortices caused by rearward flow leaving the vehicle, which is especially 
+important to reduce the overall drag of the vehicle.
+
+The simulation however for example also shows that the round surface of the lidar scanner causes some vortices to 
+form in th low pressure zone right behind the sensor, which would be one of the next step to be mitigated in terms 
+of aerodynamic optimization.
+
+And just as a disclaimer: You are right to assume that these kinds of aerodynamic optimizations do not really have 
+any measurable effect on the scale and speeds that Future Engineers is running on. But for us this is all about 
+trying new and interesting things. We were able to learn very much about aerodynamics by doing these simulations and it 
+even was a lot of fun trying it out. Can recommend.
 
 # Power and Sense Management
 
