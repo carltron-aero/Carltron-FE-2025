@@ -69,7 +69,8 @@ whilst taking multiple thousand readings every revolution of the sensor, you get
 measurements in all directions.
 
 >![LIDAR_animation.gif](other%2FLIDAR_animation.gif)
->Animation of the concept of a 360° Lidar Sensor
+> 
+> Animation of the concept of a 360° Lidar Sensor
 
 After finding the right type of sensor for our application, the next step is selecting a specific model that 
 perfectly suits the requirements set by our specific challenge.
@@ -84,7 +85,7 @@ robots' perspective, at a range of up to 2 m.
 We also need a sensor performance, that can reliably detect the black walls of the game field both at ranges of up 
 to 4 m and shallow angles, which could arise when driving close to a wall.
 
-Also, importantly, we need it to have a formfactor, that lets us easily integrate it into our robot and that fits 
+Also, importantly, we need it to have a form-factor, that lets us easily integrate it into our robot and that fits 
 under the 10 cm height, so we can actually get the sensor reading in the plane of the game field.
 
 We created this decision matrix to help us find the ideal 360° Lidar sensor:
@@ -123,6 +124,63 @@ bring the Lidar sensors measurement plane to the height middle of the 10 cm game
 Getting physical 360° planar readings already gets us quite far in perceiving precisely what kind of obstacles are 
 placed where and how to avoid them. But one crucial bit of information for the Future Engineers Challenge is still 
 missing and can not be determined just by the readings from our Lidar sensor: The **color** of the obstacles. 
+
+Since the detection of the color of the obstacles has to be performed on different angles from the point of view of 
+the robot, a camera with a wide field of view is commonly used to tackle this and similar challenges. In most cases 
+the camera simply looks forward in the driving direction and depending on the setup, the position of the obstacles 
+is either determined by the camera image directly, only providing relative readings, or by use of primary physical 
+sensors such as a 360° lidar sensor giving absolut position readings.
+
+In both cases, with the camera simply mounted forward facing, either image analysis has to be 
+performed on each whole frame to find the obstacles using visual cues, or a conversion from the physical planar 
+readings of the lidar to the different perspective of the camera frames has to be done. Both of these common options 
+can become quite compute intensive and cause lag as well as creating another possible source of unreliability.
+
+So we tried to come up with a more efficient and reliable way to both detect the obstacles position and their color.
+After trying out different set-ups and configurations, we found a novel technique that required some special 
+modifications, but allowed us to skip the compute intensive full frame analysis on each camera frame entirely and 
+without any conversions.
+
+Our approach: We can reliably detect the obstacles and their position using the Lidar sensor, just not their color. 
+From the Lidar data we directly know the exact angle in the circular Lidar scan, the obstacle is located at from the 
+Lidars' perspective.
+Now, what if instead of the camera having a different perspective than the Lidar sensor, it simply had the exact 
+same perspective? How can we get the camera to provide us with a 360° planar view just like the Lidar sensor?
+
+We use a **custom 360° camera**.
+
+We found a camera lens that provides a circular field of view of 222° and modified an existing camera sensor module 
+to capture the full image circle of this lens. And yes, that fov is more than 180°, meaning that the 
+camera can basically look behind its own sensor plane. Since we capture the full image circle (meaning all light
+the circular lens shines out its back), this actually goes for all directions from the center of the frame in the 
+exact same way.
+
+For visualisation, this is a sample frame taken from the custom 360 camera:
+
+![sample_frame.png](other%2Fsample_frame.png)
+
+As you can see, the camera is positioned on the game field looking straight upwards. You can also see, that the 
+camera has a clear view of all walls of the game field all around itself. This means that, as is also visible by the 
+various colored obstacles positioned on the field for the sample frame, the camera has a 360° view of all the 
+obstacles. 
+
+But there is still one difference to the lidar data: While the lidar directly gives us planar readings of the 
+sensors surroundings, the camera captures part of an optical sphere that converges to a single point. In order to 
+analyze a plane with the surroundings of the camera, we simply have to look at a ring-shaped region of interest in the 
+frame 
+that has a fixed radius. This radius has to be chosen precisely so that it is on the same exact plane as the camera 
+sensor.
+
+And with all that in place, we simply position the camera sensor directly over the center of rotation of our lidar 
+sensor but still under the 10 cm max height of the obstacles, et voilà - we have a camera that gives us a planar 
+360° reading that is concentric with the planar 360° reading of the Lidar.
+
+This means that we can simply 1:1 map the angles from our Lidar scans, on which we detect obstacles, onto our camera 
+frames. Instead of analysing the frame for obstacles, we just have to detect them physically using Lidar and then 
+just get the color reading on a couple of pixels on the corresponding angle of our ring-shaped region of interest in 
+order to tell the color of any detected obstacles.
+
+But the sensor plane is already exactly the right keyword: 
 
 
 As the primary sensor for detecting the course and obstacles, we use a 2D 360° LiDAR sensor that generates a precise point cloud of the robot’s surroundings at a rate of 15 Hz. This sensor detects all physical objects visible from its perspective in a plane parallel to the ground by continuously rotating and measuring distances with a laser in each direction. The LiDAR is positioned in the robot in such a way that it has an almost completely unobstructed 360° field of view. Since the camera is mounted above the LiDAR, the only obstruction is directly behind the LiDAR — the so-called “shark fin” of our robot — through which the camera’s data cable is safely routed. However, this narrow “shark fin” occupies only about 4° of the LiDAR’s field of view and can therefore be completely and losslessly filtered out in software. This allows obstacles and walls to be continuously tracked in all directions, improving overall reliability.
