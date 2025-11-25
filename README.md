@@ -1,5 +1,5 @@
 # Team Carltron - Future Engineers 2025
-![nice_robot.JPG](various%2Fnice_robot.JPG)
+![nice_robot.JPG](other%2Fnice_robot.JPG)
 <center>This is the Future Engineers project repository by team Carltron for the 2025 World Robot Olympiad International Final.
 </center>
 
