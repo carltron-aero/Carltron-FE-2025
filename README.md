@@ -111,7 +111,29 @@ To operate the Raspberry Pi and the batteries under optimal conditions, we also 
 
 ### Custom Mainboard
 
-For distributing power to the various components and ensuring communication between the electronic modules, we designed our own mainboard and had it professionally manufactured. This custom PCB provides a significantly more efficient and reliable solution compared to the numerous cables previously used between the components.
+For distributing power to the various components and ensuring communication between the electronic modules and sensors, we designed our own custom mainboard and had it professionally manufactured. 
+
+This was especially interesting to us, since we learned a lot about electrical engineering, by doing all the conceptualisation, design, layout and manufacturing information on our own.
+
+![Mainboard_layout.png](schemes%2FMainboard_layout.png)
+
+This custom PCB provides a significantly more efficient and reliable solution compared to the numerous cables we previously used to connect the components.
+
+| PCB Top Side, no components                     | PCB Bottom Side, no components                        |
+|-------------------------------------------------|-------------------------------------------------------|
+| ![pcd_top_empty.jpg](other%2Fpcd_top_empty.jpg) | ![pcb_bottom_empty.jpg](other%2Fpcb_bottom_empty.jpg) |
+
+
+Since a lot of data connections had to be routed through this Mainboard without interfering with each other, we decided to make it 4-layered with components placed on both sides of the board for maximum compactness.
+
+Both the two voltage converters, the drive motor bridge, the IMU and the Raspberry Pi are mounted directly onto the Mainboard, while cable conectors on the Mainboard facilitate the connections to the drive motor itself, the lidar sensor, the steering servo and the cooling fans.
+
+The Mainboard also directly integrates seamlessly with our custom battery holder. On the bottom side of the Mainboard, small connection pins allow the batteries to directly connect to the Mainboard when inserted.
+
+
+| PCB Top Side, assembled                         | PCB Bottom Side, assembled                            |
+|-------------------------------------------------|-------------------------------------------------------|
+| ![pcb_top_view_assembled.jpg](other%2Fpcb_top_view_assembled.jpg) | ![pcb_bottom_view_assembled.jpg](other%2Fpcb_bottom_view_assembled.jpg) |
 
 
 ## Sensors
