@@ -401,7 +401,14 @@ For precise navigation on the parcours the robot primarily uses the walls for or
 # Engineering/Design
 
 
-# Attachment
+# Videos
+Our videos with explanations about the runs can be found here:
+
+Open Challenge:
+https://www.youtube.com/watch?v=OKg4hAgMCkw
+
+Obstacle Challenge:
+https://www.youtube.com/watch?v=ECM8k0c84Ro
 
 # Github utilization
 In work on our project for the International final, we decided to separate our working repo from this documentation 
