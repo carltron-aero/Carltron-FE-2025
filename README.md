@@ -45,6 +45,9 @@ Our 3D printer probably was the most important tool throughout our entire hardwa
 parts of our chassis in PLA Filament with fine-tuned printing parameters, which can be found in the printing files 
 inside the */models* directory. By using 3D CAD designed Parts that we printed ourselves, we also managed to iterate 
 through different design approaches quickly, in most cases with under one hour per hardware iteration.
+ 
+> ![All_parts.JPG](other%2FAll_parts.JPG)
+> All 3d-printed Parts for the robot
 
 ### Drivetrain
 For the choice of our drive system, the central factors were power and compactness. At first we considered
@@ -79,6 +82,10 @@ till this day. It is a DC electric motor, that runs at 1000 rpm nominally.
 >![drive_motor.jpg](other%2Fdrive_motor.jpg)
 > The drive motor theat was selected 
 
+
+This motor theoretically also lets us fully use the required speed range from our development phase up to 1.5 m/s, 
+however we found in testing the software that a limit to 0.75 m/s made a lot more sense in order for reaction times 
+to still be adequate for avoiding crashes.
 To ensure high agility despite using front-wheel steering only, a differential on the rear axle is very helpful
 because it allows the driving wheels to move independently. This lets the inner wheel follow a smaller turning radius without unnecessary slip and without the wheels losing traction. At the regional competition we used an off-the-shelf rear axle with a differential. However, its precision and reliability did not meet our requirements. In addition, using this and other standard components in the drivetrain forced us to design the rest of the robot around those parts rather than integrating them well, since they were not developed specifically for our use case.
 
