@@ -296,6 +296,7 @@ same perspective? How can we get the camera to provide us with a 360° planar vi
 We use a **custom 360° camera**.
 
 We found a camera lens that provides a circular field of view of 222° and modified an existing camera sensor module 
+based on the IMX219 Sensor
 to capture the full image circle of this lens. And yes, that fov is more than 180°, meaning that the 
 camera can basically look behind its own sensor plane. Since we capture the full image circle (meaning all light
 the circular lens shines out its back), this actually goes for all directions from the center of the frame in the 
@@ -523,12 +524,100 @@ be managed when removing the bodywork.
 > ![pogo.jpg](other%2Fpogo.jpg)
 > 4-pin pogo connector on the chassis side for seamless bodywork hot-swap
 
+### Vollständige Bill of Materials (BOM) 
+
+Die folgendenden Materialien haben wir in unserem Roboter aktuell verbaut:
+                    
+
+| Was                                   | Anzahl | Link |
+|---------------------------------------|:------:|------|
+| Raspberry Pi 5 – 8 GB                 |   1    | https://www.raspberrypi.com/products/raspberry-pi-5/ |
+| Slamtec RPlidar S3                    |   1    | https://www.slamtec.com/en/S3 |
+| Pi 5 Active Cooler                    |   1    | https://www.amazon.de/dp/B0CNVDF2MC?ref=ppx_yo2ov_dt_b_fed_asin_title&th=1 |
+| IMX219 Camera Sensor                  |   1    | https://eckstein-shop.de/WaveshareIMX219-200Camera2C200C2B0FOV2CApplicableforJetsonNano |
+| Arducam LN010 Lens                    |   1    | https://www.welectron.com/Arducam-LN010-M12-Mount-076mm-Focal-Length-Camera-Lens-M32076M20 |
+| Adafruit BNO085                       |   1    | https://learn.adafruit.com/adafruit-9-dof-orientation-imu-fusion-breakout-bno085/overview |
+| 1000 rpm DC Drive Motor               |   1    | https://www.amazon.de/dp/B09LHCYB2D?ref=ppx_yo2ov_dt_b_fed_asin_title |
+| DRV8871 Motor Bridge                  |   1    | https://www.ti.com/product/de-de/DRV8871 |
+| 128 GB Micro SD Card                  |   1    | https://www.amazon.de/dp/B09X7DNF6G?ref=ppx_yo2ov_dt_b_fed_asin_title&th=1 |
+| Custom Mainboard                      |   1    | see chapter —---- |
+| Step Down Buck Converter (3A)         |   1    | https://www.amazon.de/-/en/dp/B0823P6PW6?ref_=ppx_hzsearch_conn_dt_b_fed_asin_title_1 |
+| Step Down Buck Converter (5A)         |   1    | https://www.amazon.de/dp/B07VQCXDTC?ref=ppx_yo2ov_dt_b_fed_asin_title&th=1 |
+| JST PH 6P Cable (10 cm)               |   1    | https://www.taja-elektronik.de/Kabel-mit-zwei-JST-PH-Buchsen-6-polig-10-cm-AWG-24-UL1571 |
+| LED Bridge (MX1508 Driver)            |   1    | https://www.roboter-bausatz.de/p/mx1508-dc-motor-treiber-modul-ln298n-1.5a?srsltid=AfmBOoq7o3wsyCjFNDBBh_EXw8hLi5eiew04EsvByAXOjzEpNDcA4T9P |
+| Magnetic Pogo 4P connector Pair       |   1    | https://de.aliexpress.com/item/1005006525401310.html?spm=a2g0o.order_list.order_list_main.5.4da05c5fSKKrJE&gatewayAdapt=glo2deu |
+| COB LED Filament (Red)                |   1    | https://de.aliexpress.com/item/1005009477275962.html?spm=a2g0o.order_list.order_list_main.11.4da05c5fSKKrJE&gatewayAdapt=glo2deu |
+| COB LED Filament (White)              |   1    | https://de.aliexpress.com/item/1005009477275962.html?spm=a2g0o.order_list.order_list_main.11.4da05c5fSKKrJE&gatewayAdapt=glo2deu |
+| Custom Bridge PCB                     |   1    | see chapter —---- |
+| High Flow Cooling Fan                 |   2    | https://www.reichelt.de/de/de/shop/produkt/luefter_5_vdc_25x25x6mm_serie_mc-397636 |
+| MR105ZZ Deep Groove Bearings          |   4    | https://www.amazon.de/dp/B0894JY8RK?ref=ppx_yo2ov_dt_b_fed_asin_title&th=1 |
+| SCY 16101 Deep Groove Bearings        |   2    | https://www.amazon.de/dp/B0CQ581Y4J?ref=ppx_yo2ov_dt_b_fed_asin_title |
+| KST MR320 Steering Servo              |   1    | https://www.kst-servo-shop.de/KST-MR320-V2.0-1800-5.5kg.cmat7.4V/KST-1303 |
+| Steering Tie Rod                      |   1    | https://www.amazon.de/dp/B08XMLJCHN?ref=ppx_yo2ov_dt_b_fed_asin_title |
+| Steering Wheel Hubs                   |   1    | https://www.amazon.de/dp/B0867J88M2?ref=ppx_yo2ov_dt_b_fed_asin_title |
+| 10 × 2 mm Circular magnets            |   8    | https://www.amazon.co.uk/Magenesis-Magnets-Approx-Adhesive-Strength/dp/B06X977K8L?th=1 |
+| 43.2 × 14 Rubber Tire (Lego 30699)    |   4    | https://www.bricklink.com/v2/catalog/catalogitem.page?P=30699&ccName=6182551#T=C&C=11 |
+| Camera FPC Adapter-Cable              |   1    | https://www.welectron.com/Raspberry-Pi-Zero-Kamera-FPC-Kabel-150mm |
+| M 1.4 – M 2.5 Countersunk Screw Set   |   1    | https://www.amazon.de/-/en/dp/B0DRCV6Q83?ref_=ppx_hzsearch_conn_dt_b_fed_asin_title_1&th=1 |
+| M 3 Countersunk Phillips Screw Set    |   1    | https://www.amazon.de/-/en/dp/B0DQCSK3QR?ref_=ppx_hzsearch_conn_dt_b_fed_asin_title_6&th=1 |
+| 24 AWG Wires (20 cm)                  |   4    | https://www.amazon.co.uk/Youmile-Silicone-Stranded-Electrical-Assortment/dp/B08DTF88KT |
+| LP-E6 Battery                         |   2    | https://www.amazon.co.uk/DSTE-Li-Ion-Battery-Compatible-MarkIII/dp/B092QNQF63 |
+| TS05042 Axle for Ball Diff            |   1    | https://www.rc-kleinkram.de/detail/index/sArticle/57135 |
+| 16 teeth drive sprocket               |   1    | https://www.amazon.de/dp/B0CYC7VYSZ?ref=ppx_yo2ov_dt_b_fed_asin_title |
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # Obstacles
-For precise navigation on the parcours the robot primarily uses the walls for orientation. In the opening race the robot therefor constantly monitors and analyzes the position of the for it visible walls to drive straight foreward in the straight sections and anticipate curves. This way it can drive efficiently on the parcours with a high velocity. 
-
-## Concept
-
+For precise navigation on the parcours the robot primarily uses the walls for orientation. In the opening race the 
+robot therefor constantly monitors and analyzes the position of the for it visible walls to drive straight foreward 
+in the straight sections and anticipate curves. This way it can drive efficiently on the parcours with a high velocity. 
 
 # Obstacle Mangement
 
