@@ -35,11 +35,104 @@ To keep the robot’s form factor small and maintain full flexibility in the ove
 
 # Power and Sense Management
 
+## Sensors
+
+The selection of sensors is obviously one of the most defining characteristics in the concept of any Future 
+Engineers robot. So let's start with a first principles approach to figure out, what kind of sensors are required to 
+achieve the strategy we intended to implement.
+
+Since our goal was to design a robot that could reliably localise itself on the playing field in 
+any place or situation, we found that we would need sensors that could give us a reading of the robots 
+physical surroundings in real time, which could be used for multiple purposes such as obstacle detection, 
+localisation and collision avoidance. By taking a closer look at the actual playing field were working with in the 
+Future Engineers category, we can see that all walls, barriers and obstacles are on a single flat level, or in other 
+words a single plane. This is because all of these relevant objects on the playing field have the same height of 100 mm.
+
+If we can get a planar 360° reading of our physical surroundings we can from any point of the playing field see so- 
+called "characteristic spots". Examples of such spots would be the corners of the outer and inner walls, the 
+barriers of the parking lot or the placement of specific obstacles. As long as our planar reading is precise enough 
+and has an adequate resolution, we, theoretically, can do all localisation, navigation and path planning based on 
+this single 360° sensor reading.
+
+Well, the great thing is, because we are not the first humans tackling challenges of autonomous navigation, there 
+already are quite mature sensor technologies that can give us the exact 360° physical reading that we need: They're 
+called 360° Lidar sensors. 
+
+Lidar (Light Detection and Ranging) is a Laser-based distance measuring technology that works by sending out light 
+beams and measuring the time their reflections from any objects take to return. Since lightspeed is constant, this 
+technology can give pretty accurate distance readings, whilst having a much more targeted measuring window (e.g. 
+compared to ultrasound distance sensors). 
+
+But what makes these sensors give 360° readings of their surroundings if they have such a targeted range? It's 
+kind of simple but also genius: You simply spin the sensor really fast (multiple times per second). By doing that 
+whilst taking multiple thousand readings every revolution of the sensor, you get a full 360° view with distance 
+measurements in all directions.
+
+>![LIDAR_animation.gif](other%2FLIDAR_animation.gif)
+>Animation of the concept of a 360° Lidar Sensor
+
+After finding the right type of sensor for our application, the next step is selecting a specific model that 
+perfectly suits the requirements set by our specific challenge.
+
+Since our robot will have to use the sensor readings while driving, we need the sensor to provide us with readings 
+regularly. Our testing showed that a rate of 10 hz worked to an acceptable extent while best results could be 
+achieved using sensors running at 15 hz or more. 
+
+Concerning the resolution of the sensor, we need it to detect the obstacles that only have a 5 cm width from the 
+robots' perspective, at a range of up to 2 m.
+
+We also need a sensor performance, that can reliably detect the black walls of the game field both at ranges of up 
+to 4 m and shallow angles, which could arise when driving close to a wall.
+
+Also, importantly, we need it to have a formfactor, that lets us easily integrate it into our robot and that fits 
+under the 10 cm height, so we can actually get the sensor reading in the plane of the game field.
+
+We created this decision matrix to help us find the ideal 360° Lidar sensor:
+
+| Criterion                                      | **RPLIDAR S3**                     | **RPLIDAR S2**                      | **D900 / LD19 Plus**              | **RPLIDAR A2**                    |
+|-----------------------------------------------|------------------------------------|-------------------------------------|-----------------------------------|-----------------------------------|
+| **Update rate ≥10 Hz**                        | 🟢 10–20 Hz adjustable             | 🟢 10 Hz fixed                      | 🟡 6–13 Hz range                  | 🟢 Up to 10 Hz                    |
+| **Best at ≥15 Hz**                            | 🟢 Supports ≥15 Hz                 | 🟡 Limited to ~10 Hz                | 🟡 Upper end ~13 Hz               | 🟡 10 Hz max typical             |
+| **5 cm @ 2 m resol.**                         | 🟢 0.1125° ultra fine              | 🟢 0.1125° ultra fine               | 🟢 ~0.7–0.8° sufficient           | 🟢 Fine enough for 5 cm          |
+| **Range margin beyond 4 m**                   | 🟢 40 m max range                  | 🟢 30–50 m variants                 | 🟢 12 m radius                    | 🟢 12–16 m range                 |
+| **Black wall @ 4 m**                          | 🟢 10% refl. to 15 m               | 🟢 10% refl. to 10–15 m             | 🟡 Spec at 70% refl.              | 🟡 Dark targets less specified    |
+| **Shallow-angle dark surfaces**               | 🟢 Optimized low-reflectivity dtof | 🟢 Good low-reflectivity handling   | 🟡 DTOF, less data published      | 🟡 Triangulation, more sensitive |
+| **Height < 10 cm**                            | 🟢 ~41 mm total height             | 🟢 ~38.9 mm height                  | 🟢 ~33.5 mm height                | 🟢 ~41 mm height                 |
+| **Compact footprint for small robot**         | 🟢 55×56 mm compact body           | 🟡 77×77 mm footprint               | 🟢 ~38×38 mm footprint            | 🟡 Larger A-series footprint     |
+| **Eye safety, outdoor light**                 | 🟢 Class 1, 80 kLux resistant      | 🟢 Class 1, IP65 rated              | 🟢 Class 1, 30–60 kLux resistant  | 🟡 Indoor-oriented, less robust  |
+| **Integration ecosystem, ROS support**        | 🟢 Strong ecosystem, drivers       | 🟢 Same Slamtec ecosystem           | 🟡 Good, but more fragmented      | 🟢 Widely used, many examples    |
+| **Cost level**                                | 🟡 Higher, premium Slamtec         | 🟡 Mid-high price tier              | 🟢 Low-mid price range            | 🟢 Affordable A-series choice    |
+| **Form factor for 10 cm plane**               | 🟢 Ideal low profile scanner       | 🟢 Low optical window height        | 🟢 Very low, cube-like            | 🟢 Fits under 10 cm              |
+| **Overall match to requirements**             | 🟢 Best fit for challenge          | 🟡 Very strong alternative          | 🟡 Good budget compromise         | 🟡 Usable, but less optimized    |
+
+So the choice fell to the RPlidar S3 Sensor. Especially its ability to provide us with adequate resolution at a 15 
+hz rotation rate due to its high sample rate, made the best choice clear to be this one. 
+
+> ![lidar_mount.jpg](other%2Flidar_mount.jpg)
+> RPlidar S3 Sensor installed on its mounting hardware
+
+Since we want to be able to use the 360° Lidar capabilities of this sensor to its fullest abilities, we decided to 
+design our robot, so that the Lidar sensor would have an unobstructed surround view. This simply means that now 
+components of the robot should reach into the field of view of the Lidar. But the sensor also should still sit well 
+underneath the 10 cm top height mark of the walls and obstacles. Sitting to high might cause the sensor to simply 
+look "over" obstacles and walls, as soon as the lidar sensors mounting is not perfectly plane. the closer we can 
+bring the Lidar sensors measurement plane to the height middle of the 10 cm game field height, the better.
+
+
+
+Getting physical 360° planar readings already gets us quite far in perceiving precisely what kind of obstacles are 
+placed where and how to avoid them. But one crucial bit of information for the Future Engineers Challenge is still 
+missing and can not be determined just by the readings from our Lidar sensor: The **color** of the obstacles. 
+
+
+As the primary sensor for detecting the course and obstacles, we use a 2D 360° LiDAR sensor that generates a precise point cloud of the robot’s surroundings at a rate of 15 Hz. This sensor detects all physical objects visible from its perspective in a plane parallel to the ground by continuously rotating and measuring distances with a laser in each direction. The LiDAR is positioned in the robot in such a way that it has an almost completely unobstructed 360° field of view. Since the camera is mounted above the LiDAR, the only obstruction is directly behind the LiDAR — the so-called “shark fin” of our robot — through which the camera’s data cable is safely routed. However, this narrow “shark fin” occupies only about 4° of the LiDAR’s field of view and can therefore be completely and losslessly filtered out in software. This allows obstacles and walls to be continuously tracked in all directions, improving overall reliability.
+
+
 ## Power Supply
 
 ### Selection of batteries
 
-In order to determine the kind of batteries we would need for our robot, our first step was getting an overview of the power consimption of all the components we intended to use:
+In order to determine the kind of batteries we would need to adequately power our robot, our first step was getting an overview of the power consimption of all the components we intended to use:
 
 | Component                                     | Power in W (peak, including voltage conversion losses) |
 |-----------------------------------------------|------------------------------------------------------|
@@ -52,7 +145,7 @@ In order to determine the kind of batteries we would need for our robot, our fir
 
 >*These wattage values were obtained by combining values from the specific data sheets of the components as well as our own measurements.*
 
-So, our batteries would need to provide ~50 Watts at peak. Our own measurements show, that over long term running, this system requires an average of 22 Watts
+So, our batteries would need to provide ~50 Watts at peak. Our own measurements show, that over long term running, our specific system requires an average of 22 Watts constantly.
 
 Additionally, we want to run our drive motor directly off the batteries without a voltage conversion. This is because any conversion losses would directly impede the performance of our drive train. Minimizing the required components (another converter in this case) also follows our general design strategy to keep all system aspects as simple as possible. To run our drive motor off the batteries directly, they need to provide provide a voltage between 14 - 18V.
 
@@ -113,11 +206,17 @@ To operate the Raspberry Pi and the batteries under optimal conditions, we also 
 
 For distributing power to the various components and ensuring communication between the electronic modules and sensors, we designed our own custom mainboard and had it professionally manufactured. 
 
-This was especially interesting to us, since we learned a lot about electrical engineering, by doing all the conceptualisation, design, layout and manufacturing information on our own.
+This was especially interesting to us, since we learned a lot about electrical engineering by doing all the conceptualisation, design, layout and manufacturing information on our own.
 
-![Mainboard_layout.png](schemes%2FMainboard_layout.png)
+>![Schematic_Mainboard_wiring.png](schemes%2FSchematic_Mainboard_wiring.png)
+>Wiring schematic of our custom Mainboard
 
-This custom PCB provides a significantly more efficient and reliable solution compared to the numerous cables we previously used to connect the components.
+
+> ![Mainboard_layout.png](schemes%2FMainboard_layout.png)
+> Actual layout and routing of the PCB (Printed Circuit Board)
+
+This custom Mainboard PCB provides a significantly more efficient and reliable solution compared to the numerous 
+cables we previously used to connect the components.
 
 | PCB Top Side, no components                     | PCB Bottom Side, no components                        |
 |-------------------------------------------------|-------------------------------------------------------|
@@ -130,15 +229,19 @@ Both the two voltage converters, the drive motor bridge, the IMU and the Raspber
 
 The Mainboard also directly integrates seamlessly with our custom battery holder. On the bottom side of the Mainboard, small connection pins allow the batteries to directly connect to the Mainboard when inserted.
 
-
-| PCB Top Side, assembled                         | PCB Bottom Side, assembled                            |
-|-------------------------------------------------|-------------------------------------------------------|
+| PCB Top Side, assembled (with battery holdder)                    | PCB Bottom Side, assembled (with battery holdder)                           |
+|-------------------------------------------------------------------|-------------------------------------------------------|
 | ![pcb_top_view_assembled.jpg](other%2Fpcb_top_view_assembled.jpg) | ![pcb_bottom_view_assembled.jpg](other%2Fpcb_bottom_view_assembled.jpg) |
 
+In order to connect the Raspberry Pi with the Mainboard, we also designed a custom adapter PCB, that directly 
+connects all GPIO pins of the Pi.
 
-## Sensors
+>TODO: Picture of bridge
 
-As the primary sensor for detecting the course and obstacles, we use a 2D 360° LiDAR sensor that generates a precise point cloud of the robot’s surroundings at a rate of 15 Hz. This sensor detects all physical objects visible from its perspective in a plane parallel to the ground by continuously rotating and measuring distances with a laser in each direction. The LiDAR is positioned in the robot in such a way that it has an almost completely unobstructed 360° field of view. Since the camera is mounted above the LiDAR, the only obstruction is directly behind the LiDAR — the so-called “shark fin” of our robot — through which the camera’s data cable is safely routed. However, this narrow “shark fin” occupies only about 4° of the LiDAR’s field of view and can therefore be completely and losslessly filtered out in software. This allows obstacles and walls to be continuously tracked in all directions, improving overall reliability.
+For all components that were directly mounted onto our custom Mainboard, we used soldering for the connectors.
+
+![soldering.jpg](other%2Fsoldering.jpg)
+
 
 # Obstacles
 For precise navigation on the parcours the robot primarily uses the walls for orientation. In the opening race the robot therefor constantly monitors and analyzes the position of the for it visible walls to drive straight foreward in the straight sections and anticipate curves. This way it can drive efficiently on the parcours with a high velocity. 
