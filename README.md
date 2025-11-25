@@ -1,8 +1,6 @@
 # Team Carltron - Future Engineers 2025
 This is the Future Engineers project repository by team Carltron for the 2025 World Robot Olympiad International Final.
 
-
-
 ### Our Journey so far...
 The 2025 season is actually our first season both in Future Engineers and WRO in general. After participating in multiple robotics competitions over the past few years, we were looking for a new challenge, when we found out about the Future Engineers Category in december 2024. Due to exams and other obligations though, we were only able to start working on our robot in April 2025, one month before our regional competition in Aachen, Germany. This challenged us to make our design strategies more efficient and also streamline our project management. After getting a working robot ready just in time, our first big moment came on the 17th of May at our regionals, where we managed to secure the qualification for the german finals by taking 1st place. 
 
